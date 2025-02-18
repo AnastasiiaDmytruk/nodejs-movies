@@ -1,4 +1,6 @@
 import { model, Schema } from 'mongoose';
+import { movieTypeList } from '../../constants/movies.js';
+import { handleSaveError, setUpdateSettings } from '../models/hooks.js';
 
 const movieSchema = new Schema(
   {
@@ -27,7 +29,7 @@ const movieSchema = new Schema(
 
     movieType: {
       type: String,
-      enum: ['short', 'series'],
+      enum: [...movieTypeList],
       default: 'feature',
       required: true,
     },
@@ -37,5 +39,9 @@ const movieSchema = new Schema(
     versionKey: false,
   },
 );
+
+movieSchema.post('save', handleSaveError);
+movieSchema.pre('findOneAndUpdate', setUpdateSettings);
+movieSchema.post('findOneAndUpdate', handleSaveError);
 
 export const MovieCollection = model('movie', movieSchema);

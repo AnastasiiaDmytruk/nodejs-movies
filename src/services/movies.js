@@ -15,10 +15,17 @@ export const deleteMovie = async (movieId) => {
 };
 
 export const updateMovie = async (movieId, payload, options = {}) => {
+  const { upsert = false } = options;
   const rawResult = await MovieCollection.findOneAndUpdate(
     { _id: movieId },
     payload,
-    { new: true, includeResultMetadata: true, ...options },
+    {
+      // new: true,
+      upsert,
+      // runValidators: true,
+      includeResultMetadata: true,
+      // ...options,
+    },
   );
 
   if (!rawResult || !rawResult.value) return null;
