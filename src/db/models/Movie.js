@@ -16,6 +16,7 @@ const movieSchema = new Schema(
     },
     releaseYear: {
       type: Number,
+      min: 1985,
       required: true,
     },
     isFavourite: {
@@ -23,15 +24,16 @@ const movieSchema = new Schema(
       default: false,
       required: true,
     },
-    // movieType: {
-    //   type: String,
-    //   enum: ['short', 'series'],
-    //   default: 'feature',
-    //   required: true,
-    // },
+
+    movieType: {
+      type: String,
+      enum: ['short', 'series'],
+      default: 'feature',
+      required: true,
+    },
   },
   {
-    // timestamps: true,
+    timestamps: true,
     versionKey: false,
   },
 );
