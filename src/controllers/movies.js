@@ -6,14 +6,29 @@ import {
   updateMovie,
 } from '../services/movies.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/filters/parseFilterParams.js';
 
 export const getMoviesController = async (req, res) => {
-  const movie = await getMovies();
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+
+  const filter = parseFilterParams(req.query);
+
+  const movies = await getMovies({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
 
   res.json({
     status: 200,
     message: 'Successfully found movies',
-    movie,
+    movies,
   });
 };
 
